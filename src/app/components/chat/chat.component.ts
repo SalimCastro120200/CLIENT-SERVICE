@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
@@ -6,9 +7,10 @@ import { ChatService } from 'src/app/services/chat.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
   texto = '';
+  mensajesSubsciptions: Subscription = new Subscription;
 
   constructor(
 
@@ -17,6 +19,13 @@ export class ChatComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.mensajesSubsciptions = this.servicioCharla.getMessages().subscribe( msg => {
+      console.log(msg);
+    } )
+  }
+
+  ngOnDestroy(){
+    this.mensajesSubsciptions.unsubscribe();
   }
 
   enviar(){

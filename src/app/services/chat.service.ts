@@ -13,7 +13,8 @@ export class ChatService {
   sendMessage(mensaje: string){
      const payload = {
       de:'Salim Castro',
-      cuerpo: mensaje
+      cuerpo: mensaje,
+      color: 'cyan'
      };
      this.wsService.emit('mensaje', payload);
      

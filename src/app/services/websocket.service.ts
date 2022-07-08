@@ -26,19 +26,11 @@ export class WebsocketService {
   }
   
   emit(evento: string, payload?: any, callback?: Function){
-<<<<<<< HEAD
-    console.log('Emitiendo ', evento);
-    this.socket.emit(evento,  payload, callback);
-  }
-
-  listen( evento: string ){
-=======
     console.log('Emitiendo ',evento);
     this.socket.emit(evento,  payload, callback);
   }
 
   listen(evento:string){
->>>>>>> 66531c72d43a5ee909c57e43b4c651b6b019b765
     return this.socket.fromEvent(evento);
   }
 }

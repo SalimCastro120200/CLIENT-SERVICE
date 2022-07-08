@@ -11,11 +11,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   texto = '';
   mensajesSubsciptions: Subscription = new Subscription;
-<<<<<<< HEAD
 
   mensajes: any[]=[];
-=======
->>>>>>> 66531c72d43a5ee909c57e43b4c651b6b019b765
 
   constructor(
 
@@ -25,10 +22,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.mensajesSubsciptions = this.servicioCharla.getMessages().subscribe( msg => {
-<<<<<<< HEAD
       this.mensajes.push(msg);
-=======
->>>>>>> 66531c72d43a5ee909c57e43b4c651b6b019b765
       console.log(msg);
     } )
   }

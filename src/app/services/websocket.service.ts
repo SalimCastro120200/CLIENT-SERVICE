@@ -37,9 +37,15 @@ export class WebsocketService {
   }
 
   loginWS( nombre: string ){
-    console.log('Configurando: ', nombre)
-    this.socket.emit('configurar-usuario', { nombre }, ( resp: Response ) => {
-      console.log(resp);
-    })
+    // console.log('Configurando: ', nombre)
+    // this.socket.emit('configurar-usuario', { nombre }, ( resp: Response ) => {
+    //   console.log(resp);
+    // })
+    return new Promise<void>( ( resolve, rejects ) => {
+      this.emit('configurar-usuario', { nombre }, (resp: Response) =>{
+        console.log(resp);
+        resolve();
+      });
+    });
   }
 }

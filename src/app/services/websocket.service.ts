@@ -7,11 +7,12 @@ import { Usuario } from '../classes/usuario';
 })
 export class WebsocketService {
   public socketStatus=false;
-  public usuario?: Usuario;
+  public usuario!: Usuario;
 
   constructor(
     private socket: Socket
   ) {
+    this.cargarStorage();
     this.checkStatus();
   }
 
@@ -37,15 +38,27 @@ export class WebsocketService {
   }
 
   loginWS( nombre: string ){
-    // console.log('Configurando: ', nombre)
-    // this.socket.emit('configurar-usuario', { nombre }, ( resp: Response ) => {
-    //   console.log(resp);
-    // })
     return new Promise<void>( ( resolve, rejects ) => {
       this.emit('configurar-usuario', { nombre }, (resp: Response) =>{
         console.log(resp);
+        this.usuario = new Usuario( nombre );
+        this.guardarStorage();
         resolve();
       });
     });
+  }
+
+  getUsuario() {
+    return this.usuario;
+  }
+
+  guardarStorage() {
+    localStorage.setItem( 'usuario', JSON.stringify( this.usuario ) )
+  }
+  cargarStorage() {
+    if( localStorage.getItem( 'usuario' ) ) {
+      // ! Lo obliga a no ser Null
+      this.usuario = JSON.parse( localStorage.getItem( 'usuario' ) ! );
+    }
   }
 }

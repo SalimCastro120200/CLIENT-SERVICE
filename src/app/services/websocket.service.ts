@@ -18,47 +18,59 @@ export class WebsocketService {
 
   checkStatus(){
     this.socket.on('connect', () => {
-      console.log('Conectado al Servidor');
+      console.log('conectado al servidor');
       this.socketStatus = true;
     })
-   
+
     this.socket.on('disconnect', () => {
-      console.log('Desconectado del Servidor');
+      console.log('Desconectado del servidor');
       this.socketStatus = false;
-    });
-  }
-  
-  emit(evento: string, payload?: any, callback?: Function){
-    console.log('Emitiendo ',evento);
-    this.socket.emit(evento,  payload, callback);
+    })
   }
 
-  listen(evento:string){
-    return this.socket.fromEvent(evento);
+
+  emit( evento: string, payload: any , callback?: Function){
+    console.log('emitiendo mensaje');
+    this.socket.emit(evento, payload, callback);
   }
 
-  loginWS( nombre: string ){
-    return new Promise<void>( ( resolve, rejects ) => {
-      this.emit('configurar-usuario', { nombre }, (resp: Response) =>{
-        console.log(resp);
-        this.usuario = new Usuario( nombre );
-        this.guardarStorage();
-        resolve();
-      });
-    });
+  listen( evento: string){
+    return this.socket.fromEvent( evento );
   }
 
-  getUsuario() {
+  loginWS(nombre: string){
+
+    return new Promise<void>( ( resolve, reject) => {
+          //console.log('Configurando :', nombre);
+     this.emit('configurar-usuario',{nombre}, (resp:Response) =>{
+      //console.log(resp);
+
+      this.usuario = new Usuario(nombre);
+      this.guardarStorage();
+      resolve();
+     });
+    }
+     /*this.socket.emit('configurar-usuario', {nombre}, (resp: Response) =>
+     {
+      console.log(resp);
+     });*/
+  )}
+
+  getUsuario(){
     return this.usuario;
   }
 
-  guardarStorage() {
-    localStorage.setItem( 'usuario', JSON.stringify( this.usuario ) )
+  guardarStorage(){
+    localStorage.setItem('usuario', JSON.stringify(this.usuario));
   }
-  cargarStorage() {
-    if( localStorage.getItem( 'usuario' ) ) {
-      // ! Lo obliga a no ser Null
-      this.usuario = JSON.parse( localStorage.getItem( 'usuario' ) ! );
+
+  cargarStorage(){
+    if(localStorage.getItem('usuario'))
+    {
+      this.usuario = JSON.parse(localStorage.getItem('usuario')!);
+      this.loginWS( this.usuario.nombre );
     }
   }
+
 }
+
